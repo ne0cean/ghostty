@@ -1,0 +1,24 @@
+# Ghostty Triggers
+# 포맷: TYPE:PATTERN  ACTION [ARG]
+#
+# TYPE:
+#   cmd:<glob>   커맨드가 패턴에 매칭될 때
+#   exit:<code>  종료코드 매칭 (exit:!0 = 에러)
+#
+# ACTION:
+#   notify [제목]   macOS 알림
+#   bell            터미널 벨
+#   run <커맨드>    백그라운드 실행
+
+# 5초 이상 걸리는 npm/yarn/bun 완료 알림
+cmd:npm*   notify npm
+cmd:yarn*  notify yarn
+cmd:bun*   notify bun
+
+# 빌드/테스트 완료 알림
+cmd:make*       notify Make
+cmd:cargo*      notify Cargo
+cmd:go build*   notify Go
+
+# 에러 종료 시 벨
+exit:!0   bell

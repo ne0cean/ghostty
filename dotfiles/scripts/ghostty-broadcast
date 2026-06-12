@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# ghostty-broadcast: 현재 사용자의 모든 터미널에 텍스트 전송
+#
+# 사용법:
+#   ghostty-broadcast "ls -la"        # 모든 터미널에 전송 (Enter 포함)
+#   ghostty-broadcast -n "ls -la"     # Enter 없이 전송
+#   ghostty-broadcast --list          # 활성 TTY 목록
+#   ghostty-broadcast --toggle        # 브로드캐스트 모드 토글
+#
+# 브로드캐스트 모드 (interactive):
+#   --toggle로 켜면 현재 터미널이 "sender"가 됨
+#   입력한 모든 커맨드가 다른 터미널에도 전송됨
+
+set -uo pipefail
+
+CURRENT_TTY=$(tty 2>/dev/null || echo "")
+BROADCAST_FLAG="/tmp/ghostty-broadcast-$(id -u).active"
+BROADCAST_SENDER_FILE="/tmp/ghostty-broadcast-$(id -u).sender"
+
+list_ttys() {
+    local me="$(whoami)"
+    for tty_path in /dev/ttys*; do
+        [[ ! -c "$tty_path" ]] && continue
+        [[ ! -w "$tty_path" ]] && continue
+        owner=$(stat -f '%Su' "$tty_path" 2>/dev/null)
+        [[ "$owner" != "$me" ]] && continue
+        echo "$tty_path"
+    done
+}
+
+send_to_all() {
+    local text="$1"
+    local add_enter="${2:-true}"
+    local current="$CURRENT_TTY"
+    local count=0
+
+    while IFS= read -r tty_path; do
+        [[ "$tty_path" == "$current" ]] && continue
+        if $add_enter; then
+            printf '%s\r' "$text" > "$tty_path" 2>/dev/null && (( count++ )) || true
+        else
+            printf '%s'   "$text" > "$tty_path" 2>/dev/null && (( count++ )) || true
+        fi
+    done < <(list_ttys)
+
+    echo "[broadcast] ${count}개 터미널에 전송됨" >&2
+}
+
+case "${1:---help}" in
+    --list|-l)
+        echo "=== 활성 TTY ==="
+        while IFS= read -r tty_path; do
+            if [[ "$tty_path" == "$CURRENT_TTY" ]]; then
+                echo "  $tty_path  ← 현재"
+            else
+                echo "  $tty_path"
+            fi
+        done < <(list_ttys)
+        ;;
+
+    --toggle|-t)
+        if [[ -f "$BROADCAST_FLAG" ]]; then
+            rm -f "$BROADCAST_FLAG" "$BROADCAST_SENDER_FILE"
+            echo "[broadcast] OFF — 브로드캐스트 모드 해제"
+            # PROMPT_COMMAND에서 broadcast hook 제거
+            printf '\e]0;%s\a' "$(basename $SHELL)" 2>/dev/null || true
+        else
+            touch "$BROADCAST_FLAG"
+            echo "$CURRENT_TTY" > "$BROADCAST_SENDER_FILE"
+            echo "[broadcast] ON  — 이 터미널이 sender. 커맨드가 다른 터미널에 복제됨"
+            echo "           해제: ghostty-broadcast --toggle"
+            # zsh-integration이 preexec에서 이 파일을 확인해 자동 전송
+        fi
+        ;;
+
+    -n)
+        shift
+        send_to_all "$*" false
+        ;;
+
+    --help|-h)
+        cat <<'HELP'
+ghostty-broadcast — 모든 터미널에 텍스트 전송
+
+사용법:
+  ghostty-broadcast "커맨드"    모든 터미널에 전송 (Enter 포함)
+  ghostty-broadcast -n "텍스트" Enter 없이 전송
+  ghostty-broadcast --list      활성 TTY 목록
+  ghostty-broadcast --toggle    인터랙티브 브로드캐스트 모드 토글
+
+브로드캐스트 모드:
+  --toggle 후 이 터미널에서 실행한 커맨드가 다른 터미널에 자동 복제됨
+  (zsh-integration.zsh의 preexec hook 필요)
+HELP
+        ;;
+
+    *)
+        send_to_all "$*" true
+        ;;
+esac

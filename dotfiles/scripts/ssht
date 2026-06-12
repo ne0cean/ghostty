@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# ssht: SSH를 새 Ghostty 창/탭으로 열기  (WezTerm SSH Tab 기능)
+#
+# 사용법:
+#   ssht user@host              새 창으로 SSH 연결
+#   ssht user@host -p 2222      포트 지정
+#   ssht --tab user@host        새 탭으로 (기본값: 새 창)
+#   ssht --list                 ~/.ssh/config 호스트 목록
+
+set -uo pipefail
+
+MODE="window"  # window | tab
+
+list_ssh_hosts() {
+    grep -E "^Host " ~/.ssh/config 2>/dev/null \
+        | awk '{print $2}' \
+        | grep -v '\*' \
+        | sort
+}
+
+open_ssh() {
+    local target="$1"
+    shift
+    local extra_args=("$@")
+
+    # SSH 커맨드 구성
+    local ssh_cmd="ssh ${extra_args[*]:-} $target"
+
+    if [[ "$MODE" == "tab" ]]; then
+        # 새 탭: ghostty는 --initial-window 지원 안 하므로
+        # 현재 창에 새 탭 열기 (AppleScript)
+        osascript <<APPLESCRIPT
+tell application "Ghostty"
+    activate
+    tell application "System Events"
+        tell process "Ghostty"
+            -- Cmd+T: 새 탭
+            keystroke "t" using command down
+            delay 0.3
+            -- SSH 커맨드 입력
+            keystroke "${ssh_cmd}"
+            key code 36
+        end tell
+    end tell
+end tell
+APPLESCRIPT
+    else
+        # 새 창: open -na Ghostty.app
+        open -na /Applications/Ghostty.app --args --wait-after-command=false -e "$ssh_cmd" 2>/dev/null || \
+        # fallback: 직접 SSH (새 창 못 열면)
+        ssh "${extra_args[@]:-}" "$target"
+    fi
+
+    echo "[ssht] 연결: $target" >&2
+}
+
+case "${1:---help}" in
+    --list|-l)
+        echo "=== ~/.ssh/config 호스트 ==="
+        list_ssh_hosts | while read -r host; do
+            echo "  ssht $host"
+        done
+        ;;
+
+    --tab)
+        MODE="tab"
+        shift
+        open_ssh "$@"
+        ;;
+
+    --help|-h)
+        cat <<'HELP'
+ssht — SSH를 새 Ghostty 창으로 열기
+
+사용법:
+  ssht user@host           새 창으로 SSH
+  ssht user@host -p 2222   포트 지정
+  ssht --tab user@host     새 탭으로
+  ssht --list              ~/.ssh/config 호스트 목록
+
+예시:
+  ssht prod-server
+  ssht noir@192.168.1.100 -p 22
+HELP
+        ;;
+
+    *)
+        open_ssh "$@"
+        ;;
+esac
