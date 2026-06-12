@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# img-paste: Cmd+V 대체 — 이미지+텍스트 통합 처리
+# 구조적 취약점 수정: ghostty paste_from_clipboard = 텍스트 전용
+#
+# 사용법:
+#   img-paste           → 자동: 이미지면 저장+경로 입력, 텍스트면 paste
+#   img-paste --check   → 클립보드 타입 확인
+#   img-paste --save    → 이미지 파일 경로만 stdout 출력 (파이프용)
+
+set -uo pipefail
+
+OUTFILE="/tmp/clipboard_img_out.png"
+TIFF_FILE="/tmp/clipboard_img_out.tiff"
+
+has_image() {
+    osascript -e 'clipboard info' 2>/dev/null \
+        | grep -qiE 'PNGf|TIFF picture|JPEG picture|jp2 |BMP '
+}
+
+has_text() {
+    local t
+    t=$(pbpaste 2>/dev/null)
+    [ ${#t} -gt 0 ]
+}
+
+save_clipboard_image() {
+    osascript <<'APPLESCRIPT' 2>/dev/null
+        try
+            set theData to the clipboard as «class PNGf»
+            set theFile to open for access POSIX file "/tmp/clipboard_img_out.png" with write permission
+            set eof theFile to 0
+            write theData to theFile
+            close access theFile
+            return "/tmp/clipboard_img_out.png"
+        on error
+            try
+                set theData to the clipboard as TIFF picture
+                set theFile to open for access POSIX file "/tmp/clipboard_img_out.tiff" with write permission
+                set eof theFile to 0
+                write theData to theFile
+                close access theFile
+                return "/tmp/clipboard_img_out.tiff"
+            on error
+                return ""
+            end try
+        end try
+APPLESCRIPT
+}
+
+paste_text() {
+    # pbpaste 내용을 현재 활성 앱에 keystroke으로 입력
+    # 이미 클립보드에 있으므로 do shell script "pbpaste"로 읽어서 keystroke
+    osascript <<'APPLESCRIPT' 2>/dev/null
+        tell application "System Events"
+            set theText to (do shell script "pbpaste")
+            keystroke theText
+        end tell
+APPLESCRIPT
+}
+
+MODE="${1:---auto}"
+
+case "$MODE" in
+    --check)
+        echo "=== 클립보드 타입 ==="
+        osascript -e 'clipboard info' 2>/dev/null
+        echo ""
+        has_text  && echo "텍스트: YES ($(pbpaste | wc -c | tr -d ' ') bytes)" \
+                  || echo "텍스트: NO"
+        has_image && echo "이미지: YES" || echo "이미지: NO"
+        ;;
+
+    --save)
+        if ! has_image; then
+            echo "[img-paste] 이미지 없음" >&2; exit 1
+        fi
+        SAVED=$(save_clipboard_image)
+        [ -n "$SAVED" ] && [ -f "$SAVED" ] && echo "$SAVED" || { echo "[img-paste] 저장 실패" >&2; exit 1; }
+        ;;
+
+    --auto|"")
+        if has_image && ! has_text; then
+            # 이미지 전용 클립보드 — 저장 후 경로 입력
+            SAVED=$(save_clipboard_image)
+            if [ -n "$SAVED" ] && [ -f "$SAVED" ]; then
+                SIZE=$(wc -c < "$SAVED" | tr -d ' ')
+                echo "[img-paste] 저장: $SAVED (${SIZE}B)" >&2
+                osascript -e "tell application \"System Events\" to keystroke \"$SAVED\""
+            else
+                echo "[img-paste] 저장 실패" >&2; exit 1
+            fi
+        elif has_text; then
+            # 텍스트 paste — keystroke으로 입력
+            paste_text
+        else
+            echo "[img-paste] 클립보드 비어있음" >&2; exit 1
+        fi
+        ;;
+esac

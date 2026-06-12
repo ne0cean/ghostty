@@ -1,0 +1,5 @@
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = false
+clipboard-paste-bracketed-safe = false
+image-storage-limit = 320000000
