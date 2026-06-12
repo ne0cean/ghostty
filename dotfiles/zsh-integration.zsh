@@ -69,6 +69,9 @@ _ghostty_precmd() {
 
         # Triggers 실행
         _ghostty_run_triggers "$_ghostty_last_cmd" "$exit_code"
+
+        # 상황맞춤형 힌트 (30초 이상 걸린 커맨드 또는 특정 패턴)
+        _ghostty_maybe_hint "$_ghostty_last_cmd" "$exit_code" "$elapsed"
     fi
 
     _ghostty_cmd_start=0
@@ -150,10 +153,98 @@ _ghostty_run_triggers() {
 #    SSH 세션 감지 시 터미널 배경색 변경
 # ──────────────────────────────────────────
 _ghostty_profile_switch() {
-    # SSH 세션이면 배경색 변경 (OSC 11)
     if [[ -n "$SSH_CONNECTION" ]]; then
-        # 원격: 약간 붉은 배경으로 구분
         printf '\e]11;#1a0d0d\a'
     fi
 }
 _ghostty_profile_switch
+
+# ──────────────────────────────────────────
+# 4. TERMINAL TITLE STATE  (OSC 2 — 모든 터미널 호환)
+#    현재 상태를 타이틀에 표시
+#    정상: zsh @ dirname
+#    broadcast ON: [📡] zsh @ dirname
+#    SSH: [ssh] zsh @ dirname
+# ──────────────────────────────────────────
+_ghostty_update_title() {
+    local dir
+    dir="${PWD/#$HOME/~}"
+
+    local prefix=""
+    # broadcast 모드 활성 여부
+    local bcast_flag="/tmp/ghostty-broadcast-$(id -u).active"
+    local bcast_sender="/tmp/ghostty-broadcast-$(id -u).sender"
+    if [[ -f "$bcast_flag" && -f "$bcast_sender" ]]; then
+        local sender_tty
+        sender_tty=$(cat "$bcast_sender" 2>/dev/null)
+        if [[ "$(tty)" == "$sender_tty" ]]; then
+            prefix="[📡] "
+        else
+            prefix="[recv] "
+        fi
+    elif [[ -n "${SSH_CONNECTION:-}" ]]; then
+        prefix="[ssh] "
+    fi
+
+    # OSC 2: 탭/윈도우 타이틀 설정 (모든 주요 터미널 지원)
+    printf '\e]2;%s\a' "${prefix}zsh @ ${dir}"
+}
+
+# precmd에 타이틀 업데이트 추가
+add-zsh-hook precmd _ghostty_update_title
+
+# ──────────────────────────────────────────
+# 5. CONTEXTUAL HINTS  (thefuck 패턴)
+#    상황에 맞는 기능 힌트를 적절한 시점에 1회 제공
+#    쿨다운: 같은 힌트는 하루 1회만
+# ──────────────────────────────────────────
+GHOSTTY_REGISTRY="${HOME}/.config/ghostty/features-registry.conf"
+GHOSTTY_HINT_DIR="/tmp/ghostty-hints-$(id -u)"
+
+_ghostty_maybe_hint() {
+    local cmd="$1"
+    local exit_code="$2"
+    local elapsed="$3"
+
+    [[ ! -f "$GHOSTTY_REGISTRY" ]] && return
+    mkdir -p "$GHOSTTY_HINT_DIR" 2>/dev/null || return
+
+    # 레지스트리에서 hint_trigger가 있는 항목만 순회
+    while IFS='|' read -r name category when how example hint_trigger; do
+        [[ "$name" =~ ^# ]] && continue
+        [[ -z "$hint_trigger" ]] && continue
+
+        # 트리거 매칭 확인
+        local trigger_type="${hint_trigger%%:*}"
+        local trigger_pattern="${hint_trigger#*:}"
+        local matched=0
+
+        case "$trigger_type" in
+            cmd)
+                [[ "$cmd" == ${~trigger_pattern} ]] && matched=1
+                ;;
+            exit)
+                if [[ "$trigger_pattern" == "!0" ]]; then
+                    (( exit_code != 0 )) && matched=1
+                fi
+                ;;
+        esac
+
+        (( matched == 0 )) && continue
+
+        # 쿨다운: 오늘 이미 이 힌트를 보여줬으면 스킵
+        local hint_stamp="${GHOSTTY_HINT_DIR}/$(echo "$name" | tr ' ()/' '----')-$(date +%Y%m%d)"
+        [[ -f "$hint_stamp" ]] && continue
+
+        # 힌트 출력
+        touch "$hint_stamp"
+        printf '\n\e[2m  💡 관련 기능: \e[0m\e[1m%s\e[0m\e[2m  →  %s\e[0m\n' "$name" "$how"
+        printf '\e[2m     ghostty-help 로 전체 기능 보기\e[0m\n\n'
+
+        # 힌트는 1개만 보여주고 중단
+        break
+    done < "$GHOSTTY_REGISTRY"
+}
+
+# precmd 훅에 힌트 추가 (타임스탬프 다음에 실행되도록 _ghostty_precmd 수정)
+# → _ghostty_run_triggers 호출 직후에 hints 호출 추가됨 (아래 precmd override)

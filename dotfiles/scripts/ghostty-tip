@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# ghostty-tip: 하루 1회 랜덤 팁 출력 (MOTD)
+#
+# 사용법:
+#   ghostty-tip              → 팁 출력 (매번)
+#   ghostty-tip --once-a-day → 하루 1번만 출력 (zshrc용)
+#   ghostty-tip --reset      → 오늘 팁 초기화 (강제 재출력)
+
+set -uo pipefail
+
+REGISTRY="${HOME}/.config/ghostty/features-registry.conf"
+STAMP_FILE="/tmp/ghostty-tip-$(id -u)-$(date +%Y%m%d)"
+
+show_tip() {
+    [[ ! -f "$REGISTRY" ]] && return
+
+    # 랜덤 기능 선택 (zsh/bash 호환)
+    local -a lines
+    while IFS= read -r l; do
+        lines+=("$l")
+    done < <(grep -v '^#' "$REGISTRY" | grep -v '^[[:space:]]*$')
+    local count=${#lines[@]}
+    (( count == 0 )) && return
+
+    # 오늘 날짜 기반 seed로 하루마다 다른 팁
+    local idx=$(( $(date +%j) % count ))
+    local line="${lines[$idx]}"
+
+    IFS='|' read -r name category when how example _ <<< "$line"
+
+    local width=52
+    local sep
+    sep=$(printf '─%.0s' $(seq 1 $width))
+
+    # 컬러 출력
+    printf '\n'
+    printf '\e[2m%s\e[0m\n' "$sep"
+    printf ' \e[33m💡 오늘의 Ghostty 팁\e[0m  \e[2m(%s)\e[0m\n' "$category"
+    printf '\n'
+    printf ' \e[1m%s\e[0m\n' "$name"
+    printf ' %s\n' "$when"
+    printf '\n'
+    printf ' \e[36m$\e[0m %s\n' "$how"
+    if [[ -n "$example" && "$example" != "$how" ]]; then
+        printf ' \e[2m예) %s\e[0m\n' "$example"
+    fi
+    printf '\n'
+    printf ' \e[2m더 보기: ghostty-help\e[0m\n'
+    printf '\e[2m%s\e[0m\n' "$sep"
+    printf '\n'
+}
+
+case "${1:---show}" in
+    --once-a-day)
+        # Ghostty 터미널 안에서만 실행
+        [[ -z "${GHOSTTY_RESOURCES_DIR:-}" ]] && exit 0
+        # 오늘 이미 출력했으면 스킵
+        [[ -f "$STAMP_FILE" ]] && exit 0
+        touch "$STAMP_FILE"
+        show_tip
+        ;;
+    --reset)
+        rm -f "$STAMP_FILE"
+        echo "[ghostty-tip] 초기화됨. 다음 터미널 시작 시 팁 출력."
+        ;;
+    --show|*)
+        show_tip
+        ;;
+esac

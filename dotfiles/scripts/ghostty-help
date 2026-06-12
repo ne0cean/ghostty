@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# ghostty-help: Ghostty 기능 인터랙티브 팔레트 (VS Code Command Palette 방식)
+#
+# 사용법: ghostty-help [검색어]
+# fzf 필요: brew install fzf
+
+set -uo pipefail
+
+REGISTRY="${HOME}/.config/ghostty/features-registry.conf"
+FZF_BIN="${FZF_BIN:-$(which fzf 2>/dev/null || echo /opt/homebrew/bin/fzf)}"
+
+if [[ ! -f "$REGISTRY" ]]; then
+    echo "[ghostty-help] 레지스트리 없음: $REGISTRY" >&2; exit 1
+fi
+if [[ ! -x "$FZF_BIN" ]]; then
+    echo "[ghostty-help] fzf 필요: brew install fzf" >&2; exit 1
+fi
+
+# 레지스트리 파싱 함수
+# 입력: NAME|CATEGORY|WHEN|HOW|EXAMPLE|HINT_TRIGGER
+preview_feature() {
+    local name="$1"
+    local registry="$2"
+    # 이름으로 레지스트리 행 찾기
+    local line
+    line=$(grep -m1 "^${name}|" "$registry" 2>/dev/null) || \
+    line=$(grep -m1 "^$(echo "$name" | sed 's/[|.*+?^${}()[\]\\]/\\&/g')" "$registry" 2>/dev/null)
+    [[ -z "$line" ]] && echo "설명 없음" && return
+
+    local category when how example
+    IFS='|' read -r _ category when how example _ <<< "$line"
+
+    local width=50
+    local sep
+    sep=$(printf '─%.0s' $(seq 1 $width))
+
+    cat <<PREVIEW
+${sep}
+  📂 카테고리   ${category}
+
+  ⏰ 언제 쓰나
+  ${when}
+
+  💡 사용법
+  \$ ${how}
+
+  📋 예시
+  \$ ${example}
+${sep}
+  ghostty-help 종료: q  ·  실행: Enter
+PREVIEW
+}
+
+export -f preview_feature
+export REGISTRY
+
+# 이름 목록 추출 (주석·빈줄 제외)
+NAMES=$(grep -v '^#' "$REGISTRY" | grep -v '^[[:space:]]*$' | cut -d'|' -f1)
+
+# fzf 팔레트 실행
+SELECTED=$(echo "$NAMES" | "$FZF_BIN" \
+    --prompt="Ghostty 기능 검색 > " \
+    --header="↑↓ 이동  Enter 선택  / 검색  q 종료" \
+    --preview="bash -c 'preview_feature \"\$0\" \"$REGISTRY\"' {}" \
+    --preview-window="right:55%:wrap" \
+    --height="70%" \
+    --border="rounded" \
+    --color="header:italic,prompt:bold" \
+    --query="${1:-}" \
+    2>/dev/null) || exit 0
+
+[[ -z "$SELECTED" ]] && exit 0
+
+# 선택된 기능의 how 필드 추출 → 클립보드 복사 + 출력
+HOW=$(grep -m1 "^${SELECTED}|" "$REGISTRY" | cut -d'|' -f4)
+
+echo ""
+echo "  ✓  ${SELECTED}"
+echo "  →  ${HOW}"
+echo ""
+
+# macOS 클립보드에 복사
+if [[ -n "$HOW" ]]; then
+    printf '%s' "$HOW" | pbcopy 2>/dev/null
+    echo "  클립보드에 복사됨. Cmd+V 로 붙여넣기"
+    echo ""
+fi
