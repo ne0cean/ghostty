@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-13T11:43:43.956Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a7a52eb571216da15",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a7a52eb571216da15.jsonl",
+    "last_assistant_message": "Fixed Ghostty image-paste: use Ctrl+V in Claude Code, Cmd+Shift+V as backup; cleaned up the broken Cmd+V hijack. Next, restart Ghostty and test both paste shortcuts work. Also pending: your OK to delete the orphaned ~/bin/img-paste.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
