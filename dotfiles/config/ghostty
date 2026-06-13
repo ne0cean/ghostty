@@ -1,5 +1,5 @@
-clipboard-read = allow
-clipboard-write = allow
-clipboard-paste-protection = false
-clipboard-paste-bracketed-safe = false
-image-storage-limit = 320000000
+# 이미지 붙여넣기
+#   • Claude Code / AI CLI  →  Ctrl+V   (앱이 클립보드 이미지를 직접 읽음. Cmd+V 금지!)
+#   • 그 외(vim/cp 등) 파일 경로가 필요할 때  →  Cmd+Shift+V (img-paste 백업)
+#     Cmd+Shift+V 가 C-x C-v 를 보내면 zsh 위젯이 클립보드 이미지를 /tmp 저장 후 경로 삽입
+keybind = cmd+shift+v=text:\x18\x16

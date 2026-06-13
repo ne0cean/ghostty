@@ -248,3 +248,20 @@ _ghostty_maybe_hint() {
 
 # precmd 훅에 힌트 추가 (타임스탬프 다음에 실행되도록 _ghostty_precmd 수정)
 # → _ghostty_run_triggers 호출 직후에 hints 호출 추가됨 (아래 precmd override)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# img-paste 백업 위젯 — 클립보드 이미지의 *파일 경로*를 커맨드라인에 삽입
+# 연결: Ghostty `cmd+shift+v=text:\x18\x16` → C-x C-v → 이 위젯
+# (Claude Code 등 AI CLI의 이미지 paste는 위젯이 아니라 Ctrl+V 를 쓸 것)
+# ─────────────────────────────────────────────────────────────────────────────
+_img_paste_widget() {
+    local p
+    p=$(command img-paste --save 2>/dev/null) || { zle -M "[img-paste] 클립보드에 이미지 없음"; return 0; }
+    if [[ -n "$p" ]]; then
+        LBUFFER+="$p"
+        zle -M "[img-paste] $p"
+    fi
+    zle redisplay
+}
+zle -N _img_paste_widget
+bindkey '^X^V' _img_paste_widget   # C-x C-v (Ghostty cmd+shift+v 가 전송)
