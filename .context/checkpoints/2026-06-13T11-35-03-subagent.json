@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-13T11:35:03.496Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a8af5679dedf6e08e",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a8af5679dedf6e08e.jsonl",
+    "last_assistant_message": "Goal: fix image paste in Ghostty. Done — Claude Code uses Ctrl+V, the broken Cmd+V hijack is removed, and Cmd+Shift+V is wired as a backup. Next: restart Ghostty and a new shell, then test both.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
