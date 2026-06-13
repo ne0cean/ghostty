@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-13T11:13:38.392Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a5fb126bee37d4c90",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a5fb126bee37d4c90.jsonl",
+    "last_assistant_message": "Goal: fix image paste in Claude Code on Ghostty. Found the cause — you were using Cmd+V, but Claude Code needs Ctrl+V, so it already works with no setup. Next: decide whether to revert yesterday's unnecessary img-paste/Karabiner changes.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
