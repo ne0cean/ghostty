@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-13T20:56:45.682Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles/research",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a1245b55a2be3cf4f",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_8c6bf416-932/agent-a1245b55a2be3cf4f.jsonl",
+    "last_assistant_message": "Returned 6 ranked sources covering the practitioner/CLI-tools angle (question 3).\n\nKey practitioner findings from the search:\n\n**Tool → protocol dependency mapping (Ghostty implications):**\n- **kitten icat** — pure kitty graphics protocol. Ghostty implements this protocol, so icat is the canonical \"works in Ghostty\" tool. Supports `--transfer-mode=stream/file`. (CONFIRMED working class.)\n- **chafa** — must invoke `chafa -f kitty` under Ghostty for native inline rendering; otherwise it falls back to its own cell/symbol output, not true graphics. (CONFIRMED with explicit flag.)\n- **viu** — mixed/uncertain reports for Ghostty in the discussions; viu auto-detects kitty protocol but compatibility was flagged as inconsistent. (UNCERTAIN.)\n- **wezterm imgcat** — uses ONLY the iTerm2 inline image protocol (OSC 1337), NOT kitty graphics. So it will not render in Ghostty unless Ghostty supports OSC 1337 — this is the single most important per-tool caveat to verify. (Protocol-mismatch risk.)\n- **timg** — not directly confirmed in results; emits kitty/sixel/iTerm2 depending on detection (warrants direct verification).\n\n**Two major real-world limitations surfaced (load-bearing for a dotfiles toolkit):**\n1. **tmux breaks inline images** — Ghostty discussion #7224 documents that the kitty graphics protocol does not passthrough tmux cleanly, so icat/chafa/viu fail inside tmux even though Ghostty itself supports the protocol.\n2. **Incomplete protocol edge cases** — Ghostty discussion #5218 notes some kitty control sequences (e.g. advanced animation) work in kitty but not Ghostty.\n\nThese two GitHub discussions are the primary sources for the CONFIRMED/UNCERTAIN/UNSUPPORTED distinction the report needs.",
+    "background_tasks": [
+      {
+        "id": "w6s33ng5m",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
