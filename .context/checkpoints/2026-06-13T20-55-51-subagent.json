@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-13T20:55:51.755Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles/research",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a29f17acfec896a91",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_8c6bf416-932/agent-a29f17acfec896a91.jsonl",
+    "last_assistant_message": "I've completed the research decomposition task and returned the structured output with 5 complementary search angles covering all 5 sub-scopes of the question.",
+    "background_tasks": [
+      {
+        "id": "w6s33ng5m",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
