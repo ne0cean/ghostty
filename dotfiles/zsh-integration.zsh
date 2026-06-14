@@ -3,12 +3,32 @@
 # source this in ~/.zshrc:
 #   [[ -n "$GHOSTTY_RESOURCES_DIR" ]] && source ~/.config/ghostty/zsh-integration.zsh
 
+# EPOCHREALTIME 사용을 위해 zsh/datetime 모듈 보장 (이미 로드돼 있으면 무해)
+zmodload zsh/datetime 2>/dev/null || true
+
 # ──────────────────────────────────────────
 # 1. LINE TIMESTAMPS  (iTerm2 equivalent)
 #    커맨드 실행 시각 + 소요 시간 표시
 # ──────────────────────────────────────────
 _ghostty_cmd_start=0
 _ghostty_last_cmd=""
+
+# 소요 시간 포맷 함수 (start, end 부동소수점 → "46.2s" / "2m5s" / "345ms")
+_ghostty_format_duration() {
+    local start="$1" end="$2"
+    local elapsed
+    elapsed=$(( end - start ))
+    if (( elapsed >= 60 )); then
+        local m=$(printf '%.0f' "$(( elapsed / 60 ))")
+        local s=$(printf '%.0f' "$(( elapsed - m * 60 ))")
+        print "${m}m${s}s"
+    elif (( elapsed >= 1 )); then
+        printf "%.1fs\n" "$elapsed"
+    else
+        local ms=$(printf '%.0f' "$(( elapsed * 1000 ))")
+        print "${ms}ms"
+    fi
+}
 
 _ghostty_preexec() {
     _ghostty_cmd_start=$EPOCHREALTIME
@@ -43,18 +63,9 @@ _ghostty_precmd() {
         local elapsed=$(( end - _ghostty_cmd_start ))
         local timestamp=$(date '+%H:%M:%S')
 
-        # 소요 시간 포맷 (1분 이상이면 m:ss)
+        # 소요 시간 포맷 (공통 함수 사용)
         local duration
-        if (( elapsed >= 60 )); then
-            local m=$(( int(elapsed / 60) ))
-            local s=$(( int(elapsed % 60) ))
-            duration="${m}m${s}s"
-        elif (( elapsed >= 1 )); then
-            duration="${elapsed:.1f}s"
-        else
-            local ms=$(( int(elapsed * 1000) ))
-            duration="${ms}ms"
-        fi
+        duration="$(_ghostty_format_duration "$_ghostty_cmd_start" "$end")"
 
         # 종료코드에 따라 색상 결정
         local status_color
@@ -98,50 +109,80 @@ add-zsh-hook precmd  _ghostty_precmd
 # ──────────────────────────────────────────
 GHOSTTY_TRIGGERS_FILE="${HOME}/.config/ghostty/triggers"
 
+# 트리거 라인 파서
+# 형식: TYPE:PATTERN  ACTION [ARG]
+# ACTION은 notify|bell|run 중 하나 — 이 키워드를 기준으로 PATTERN과 ARG 분리
+# 결과: _pt_type, _pt_pattern, _pt_action, _pt_arg (caller 스코프에 저장)
+_ghostty_parse_trigger_line() {
+    local line="$1"
+    _pt_type="" _pt_pattern="" _pt_action="" _pt_arg=""
+
+    # 주석/빈줄
+    [[ "$line" =~ ^[[:space:]]*# ]] && return
+    [[ -z "${line// }" ]] && return
+
+    # TYPE 추출 (첫 번째 ':' 앞)
+    _pt_type="${line%%:*}"
+    local rest="${line#*:}"
+
+    # ACTION 키워드(notify|bell|run) 위치를 기준으로 파싱
+    # rest = "PATTERN   ACTION [ARG]"
+    # notify/bell/run 중 하나를 기준으로 앞=PATTERN, 뒤=ARG
+    local action_kw
+    local before_kw
+    if [[ "$rest" =~ (.*)[[:space:]]+(notify|bell|run)([[:space:]].*)?$ ]]; then
+        before_kw="${match[1]}"
+        action_kw="${match[2]}"
+        local after_kw="${match[3]}"
+
+        # PATTERN: before_kw에서 선행/후행 공백 제거 (## = 1개 이상 공백 제거)
+        _pt_pattern="${before_kw#"${before_kw%%[! ]*}"}"
+        _pt_pattern="${_pt_pattern%"${_pt_pattern##*[! ]}"}"
+        _pt_action="$action_kw"
+        # ARG: after_kw의 선행/후행 공백 제거
+        _pt_arg="${after_kw#"${after_kw%%[! ]*}"}"
+        _pt_arg="${_pt_arg%"${_pt_arg##*[! ]}"}"
+    else
+        # 매칭 실패 — 파싱 불가
+        _pt_type=""
+    fi
+}
+
 _ghostty_run_triggers() {
     local cmd="$1"
     local exit_code="$2"
     [[ ! -f "$GHOSTTY_TRIGGERS_FILE" ]] && return
 
     while IFS= read -r line || [[ -n "$line" ]]; do
-        # 주석/빈줄 스킵
-        [[ "$line" =~ ^[[:space:]]*# ]] && continue
-        [[ -z "${line// }" ]] && continue
-
-        local type pattern action arg
-        type="${line%%:*}"
-        rest="${line#*:}"
-        pattern="${rest%% *}"
-        action_full="${rest#* }"
-        action="${action_full%% *}"
-        arg="${action_full#* }"
-        [[ "$arg" == "$action" ]] && arg=""
+        local _pt_type _pt_pattern _pt_action _pt_arg
+        _ghostty_parse_trigger_line "$line"
+        [[ -z "$_pt_type" ]] && continue
 
         local matched=0
-        case "$type" in
+        case "$_pt_type" in
             cmd)
-                [[ "$cmd" == ${~pattern} ]] && matched=1
+                [[ "$cmd" == ${~_pt_pattern} ]] && matched=1
                 ;;
             exit)
-                if [[ "$pattern" == "!0" ]]; then
+                if [[ "$_pt_pattern" == "!0" ]]; then
                     (( exit_code != 0 )) && matched=1
-                elif [[ "$pattern" == "$exit_code" ]]; then
+                elif [[ "$_pt_pattern" == "$exit_code" ]]; then
                     matched=1
                 fi
                 ;;
         esac
 
         if (( matched )); then
-            case "$action" in
+            case "$_pt_action" in
                 notify)
-                    local title="${arg:-Ghostty}"
+                    local title="${_pt_arg:-Ghostty}"
                     osascript -e "display notification \"${cmd}\" with title \"${title}\"" 2>/dev/null &
                     ;;
                 bell)
                     print -n "\a"
                     ;;
                 run)
-                    [[ -n "$arg" ]] && eval "$arg" &
+                    [[ -n "$_pt_arg" ]] && eval "$_pt_arg" &
                     ;;
             esac
         fi
@@ -162,10 +203,23 @@ _ghostty_profile_switch
 # ──────────────────────────────────────────
 # 4. TERMINAL TITLE STATE  (OSC 2 — 모든 터미널 호환)
 #    현재 상태를 타이틀에 표시
-#    정상: zsh @ dirname
-#    broadcast ON: [📡] zsh @ dirname
-#    SSH: [ssh] zsh @ dirname
+#    정상: 레포명 — dirname
+#    broadcast ON: [📡] 레포명 — dirname
+#    SSH: [ssh] 레포명 — dirname
 # ──────────────────────────────────────────
+
+# 레포/프로젝트명 추출: git 레포 → 레포명, 비git → 디렉토리명 ($HOME이면 "~")
+# cmd+d split pane 상단 타이틀에서 프로젝트 식별에 사용
+_ghostty_repo_name() {
+    if git rev-parse --show-toplevel &>/dev/null 2>&1; then
+        basename "$(git rev-parse --show-toplevel)"
+    elif [[ "$PWD" == "$HOME" ]]; then
+        print "~"
+    else
+        basename "$PWD"
+    fi
+}
+
 _ghostty_update_title() {
     local dir
     dir="${PWD/#$HOME/~}"
@@ -186,8 +240,12 @@ _ghostty_update_title() {
         prefix="[ssh] "
     fi
 
-    # OSC 2: 탭/윈도우 타이틀 설정 (모든 주요 터미널 지원)
-    printf '\e]2;%s\a' "${prefix}zsh @ ${dir}"
+    # 레포/프로젝트명 추출
+    local repo_name
+    repo_name="$(_ghostty_repo_name)"
+
+    # OSC 2: 탭/윈도우 타이틀 설정 (각 split pane별 식별)
+    printf '\e]2;%s\a' "${prefix}${repo_name} — ${dir}"
 }
 
 # precmd에 타이틀 업데이트 추가
