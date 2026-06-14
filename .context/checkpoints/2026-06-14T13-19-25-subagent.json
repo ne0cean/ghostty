@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:19:25.906Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "aa4cce8d666b2bd5f",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-aa4cce8d666b2bd5f.jsonl",
+    "last_assistant_message": "Returned 6 ranked results. Key fact-check signals for the parent agent:\n\n- **Confirmed (primary source):** Ghostty supports the Kitty Graphics Protocol and has explicitly declined Sixel — per official GitHub Discussion #2496.\n- **Uncertain / conflicting:** One secondary blog claims \"Ghostty 1.4.0 supports sixel rendering,\" which contradicts the official maintainer stance. This needs verification against ghostty.org release notes before being treated as true.\n- **Protocol comparison (well-sourced):** Sixel is palette-based (0-100 color range vs 0-255), slower, lower quality; Kitty supports PNG/animated GIF/GPU-accel; iTerm2 OSC 1337 uses direct base64.\n- **Tool dependency mapping:** Compatibility matrix confirms WezTerm supports all three, Kitty/Ghostty back Kitty protocol, Alacritty supports none — relevant to whether kitten icat/chafa/timg/viu work under Ghostty.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:20:02.936Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "ac1f2fb4b698d0221",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-ac1f2fb4b698d0221.jsonl",
+    "last_assistant_message": "I've fetched and extracted claims from the Akmatori blog post on terminal graphics protocols.\n\nSummary of findings:\n\nSource quality: blog (Akmatori team, a vendor/company blog — secondary technical content, not primary documentation). Published 2026-03-14.\n\nKey extractions bearing on the research question:\n- The post explicitly lists Ghostty as supporting the Kitty graphics protocol, alongside Kitty, WezTerm, and Konsole (partial) — directly relevant to research sub-question 2.\n- It claims Ghostty supports \"Full\" tmux passthrough for Kitty graphics.\n- Kitty protocol: base64 binary transfer, most feature-rich (24-bit color, animation, virtual placements), but limited support outside Kitty ecosystem.\n- Sixel: palette-based (~256 colors), no animation, can be slow, but works over SSH and has broad support.\n- iTerm2 OSC 1337: base64-encoded, true color, macOS-focused with limited Linux support.\n\nCaveat for the parent agent: this is a vendor blog, not Ghostty's official documentation. The Ghostty-specific claims (Kitty protocol support, \"full\" tmux passthrough) should be cross-verified against Ghostty's official docs/GitHub before being marked \"confirmed\" — per the research question's requirement to prioritize official Ghostty sources. The blog gives no detail on Ghostty's known limitations or version-specific support range.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

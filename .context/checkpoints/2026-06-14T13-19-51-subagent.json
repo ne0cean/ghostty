@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:19:51.903Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a9af921c8c12f6650",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-a9af921c8c12f6650.jsonl",
+    "last_assistant_message": "Extracted claims from the Ghostty GitHub Discussion #2496 (\"Sixel Support\"). This is a primary source — the official Ghostty repo discussion with maintainer (Mitchell Hashimoto) and developer (Tim Culverhouse/rockorager) statements. Key findings: Ghostty explicitly will NOT support Sixel (decision dated 2024-11-22), and instead uses the Kitty Graphics Protocol as its primary/supported image rendering path, confirmed working with tmux.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

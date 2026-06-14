@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:20:19.031Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a9395f47708c76b83",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-a9395f47708c76b83.jsonl",
+    "last_assistant_message": "Extracted 4 falsifiable claims from the GitHub issue. This is a forum-type source (vendor issue tracker, user-reported) directly relevant to section 4 of the research question — clipboard image handling in terminal workflows. Key confirmation: the TTY cannot receive image bytes directly, so apps like Claude Code read the system clipboard via platform APIs (pbpaste/NSPasteboard), and tmux's paste path only forwards text. Note the OSC 52 / pbpaste mechanism is the reporter's hypothesis, not confirmed by Anthropic; the issue was closed as not planned.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:22:12.454Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "af46d9ae6878176b8",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-af46d9ae6878176b8.jsonl",
+    "last_assistant_message": "Claim verified as not refuted. Every specific detail (macOS 15.4.1, Ghostty 1.1.4-main+6723c308, Metal renderer, kitty-protocol PNG, \"diagonal lines not straight,\" \"offset by fraction of pixel\") was confirmed verbatim against the primary source GitHub discussion #7350 via the GitHub API. The supporting quote is accurate and the claim is appropriately scoped to a specific historical bug rather than an ongoing limitation.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

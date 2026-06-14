@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:20:12.704Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "aa431410dc8e7a554",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-aa431410dc8e7a554.jsonl",
+    "last_assistant_message": "Extracted the relevant claims from this DEV Community blog post.\n\nSource quality: **blog** — a \"vibehackers\" listicle (\"Best Terminal for Mac in 2026\"), opinion/roundup format, not primary documentation. Useful as a secondary signal but its protocol-support table should be cross-checked against Ghostty official docs/GitHub before relying on it.\n\nKey takeaways for the research question:\n- The post claims **Ghostty = Kitty graphics protocol: Yes; Sixel: No; iTerm2 OSC 1337: No** — directly relevant to scope item 2, but unverified by the source (no citation to Ghostty docs).\n- Notes Kitty graphics protocol is increasingly a cross-terminal standard (\"adopted by Ghostty, WezTerm\").\n- Claims WezTerm is the only one supporting all three protocols.\n- Does **not** name any CLI image tools (kitten icat, timg, chafa, viu, imgcat), so it offers nothing on scope item 3, nor anything on clipboard workflow (item 4) or macOS install caveats (item 5).\n\nNote one likely inaccuracy to flag for verification: iTerm2 itself is the origin of the OSC 1337 inline image protocol, yet the article's table marks iTerm2 \"No\" for the iTerm2 column — suggesting the table is sloppy and should not be trusted as authoritative.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

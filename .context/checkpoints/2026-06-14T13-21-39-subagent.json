@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:21:39.859Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "ab830b4c35aa05087",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-ab830b4c35aa05087.jsonl",
+    "last_assistant_message": "Verification complete. The claim is **not refuted** — it is fully supported by its primary source (GitHub discussion #7350), with all specific details (macOS 15.4.1, Metal, Ghostty 1.1.4-main+6723c308, kitty-protocol PNG, sub-pixel diagonal-line artifacts) confirmed. The only caveat is that the bug was subsequently fixed in PR #7367, but the claim is correctly scoped to the past tense for that specific build, so it remains accurate.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

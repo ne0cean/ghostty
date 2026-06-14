@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:19:30.709Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "aa6f0e618219c93cd",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-aa6f0e618219c93cd.jsonl",
+    "last_assistant_message": "Returned 6 ranked sources via StructuredOutput. Key findings for the ghostty-support angle:\n\n- **Confirmed supported:** Kitty graphics protocol (official docs + discussions). chafa/timg/viu/kitten-icat work via the Kitty path.\n- **Confirmed unsupported:** Sixel (maintainer has explicitly declined to add it — Discussion #2496, corroborated by HN). This means chafa's common Sixel fallback won't work on Ghostty; tools must use `-f kitty`/auto-detect Kitty.\n- **Known constraints:** No animation frames (#5350); Kitty protocol can fail with temp-file transfer mode vs inline (#5774); libghostty render-state C API does not expose image data to embedders (#12111); chafa+fzf image-clear quirk on exit (#3054).\n\niTerm2 OSC 1337 support was not definitively confirmed in these results — flagged as uncertain and would need the official docs page (ghostty.org/docs/features) to confirm.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

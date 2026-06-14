@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:22:01.732Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "aba8abed471b649c6",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-aba8abed471b649c6.jsonl",
+    "last_assistant_message": "Verdict delivered. The claim's core fact (Ghostty/mitchellh has no plan to support Sixel, preferring Kitty graphics protocol) is true and well-supported by primary sources, but the claim is **refuted** on its specific attribution: the \"tweet circa 2022\" dating is wrong. The cited tweet ID (1985432954089455856) decodes to late 2025 via Twitter snowflake timestamps, and the canonical statement is actually a November 2024 GitHub discussion, not a 2022 tweet.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

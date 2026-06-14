@@ -1,58 +1,67 @@
 # 터미널 인라인 이미지 / 그래픽 프로토콜 — Ghostty 판단용 리포트
 
-생성: 2026-06-14 16:1x KST
-방법: deep-research 워크플로(17 소스/69 주장 추출) + **로컬 Ghostty 1.3.1 바이너리 실측**
+생성: 2026-06-14 (20:00 재실행본 — 적대검증 정상 작동)
+방법: deep-research 워크플로(12 소스→50 주장→25 검증→**9 confirmed**) + 로컬 Ghostty 1.3.1 바이너리 실측
 
-> ⚠️ **검증 주의**: deep-research의 적대적 검증 단계가 rate-limit으로 전부 실패(vote 0-0)해
-> 워크플로 자체는 "25개 주장 모두 killed"로 보고함. **이는 실제 반증이 아니라 검증 미수행**이다.
-> 대신 아래 핵심 주장은 **로컬 Ghostty 바이너리 strings/terminfo로 직접 검증**했고,
-> 1차 출처(GitHub discussions, ghostty.org/docs, mitchellh)가 서로 일관된다.
+> ✅ 이 버전은 이전 두 번(rate-limit으로 검증 0-0 전멸)과 달리 **적대검증이 실제 작동**(vote 2-0/3-0).
+> 핵심 주장은 1차 출처(ghostty.org/docs, GH discussions, 릴리스 노트) + 로컬 바이너리로 교차확정.
 
 ---
 
 ## 핵심 발견 (지원 여부 명확 구분)
 
-### ✅ 확인됨 (로컬 실측 + 1차 출처 일치)
-- **Ghostty는 kitty graphics protocol을 구현한다.**
-  - 로컬 실측: `/Volumes/Ghostty/Ghostty.app/.../ghostty` 바이너리에 문자열
-    `Kitty Graphics`, `_Gi=1,a=q`(kitty graphics 쿼리 APC 시퀀스), `(Kitty graphics are disabled)` 토글 존재.
-  - 출처: ghostty.org/docs/features, mitchellh 트윗(libghostty + GUI 지원), GH discussions #2496/#3054/#5218/#7350, HN #45801643.
-- **kitten icat 가 Ghostty에서 동작한다.** (GH discussion #7350 — Ghostty 1.1.4 macOS에서 icat로 PNG 렌더 버그 재현, 즉 렌더 자체는 됨.)
+### ✅ 확인됨 (high confidence)
+- **kitty graphics protocol = Ghostty의 유일/주력 인라인 이미지 솔루션.** vote 2-0/3-0.
+  - 1차: ghostty.org/docs/features("Ghostty supports the Kitty graphics protocol...render images directly").
+  - 로컬 실측: 바이너리에 `Kitty Graphics`, `_Gi=1,a=q`, `(Kitty graphics are disabled)` 문자열.
+  - `kitten icat path/to/file.png` 가 Ghostty에서 인라인 렌더 (GH #8948, #5774, #7350).
+  - 전송 지원: PNG/JPG/GIF/BMP/TIFF/WEBP.
+  - **경계**: kitty와 완전 동등은 아님 — 애니메이션 프레임 미지원, 일부 CSI/OSC 미구현 로깅.
 
-### ✅ 확인됨 — 미지원 (1차 출처 일관, 강함)
-- **Sixel 미지원.** mitchellh가 명시적으로 구현 안 하기로 결정(GH #2496, HN #45801643). kitty graphics를 선호.
-- **iTerm2 inline image protocol(OSC 1337) 미지원.** (GH discussion #3054 — WezTerm은 둘 다 지원하나 Ghostty는 kitty만.)
+- **Sixel 미지원 — 설계상 거부(MISSING by design).** vote 2-0/3-0.
+  - mitchellh 명시(GH #2496, 2024-11-22): "Ghostty will not support sixels." 이유: libsixel 품질 문제, 엣지케이스 다수, kitty가 미래 프로토콜.
+  - 1.3.0(2026-03) 릴리스 노트에도 Sixel 추가 없음 — 18개월+ 입장 유지.
 
-### ⚠️ 불확실 / 부분 (1차 출처 있으나 로컬 미검증)
-- **kitty graphics 중 애니메이션 프레임(a=f, 다중 프레임)은 미구현.** 메타 추적 이슈 #8272(2025-08-18 open)에 pause/load frame/composite frame이 미해결 서브이슈로 남음. (정적 이미지엔 영향 없음.)
-- **문서 불완전**: 메인테이너가 kitty graphics 지원 범위 문서가 불완전하다고 인정(#5218).
+### ⚠️ 불확실하나 유력 (medium) — 미지원 쪽
+- **iTerm2 OSC 1337 이미지 렌더 미지원.** OSC 1337은 *파싱*은 되나 이미지 *렌더* 미구현(1.3.0 릴리스 노트 + GH #3054). 검증 vote는 0-0(불충분)이라 medium.
 
-### 도구별 프로토콜 의존성 (출처: chafa releases, timg 블로그, rasterm)
-- **chafa** — kitty/sixel/iTerm2 모두 지원, 최근 릴리스에서 **Ghostty 명시 지원 추가(기본 kitty)**. brew `chafa 1.18.2` 설치 가능.
-- **timg** — kitty/sixel/iTerm2 자동 감지, 없으면 24-bit 유니코드 블록 폴백.
-- **kitten icat** — kitty 전용(kitty 패키지 동봉).
-- **viu** — (조사됨, Ghostty 동작은 미확정).
+### 🐞 툴킷에 직결되는 실제 버그 (high, 확정)
+- **파일전송 모드 임시파일 이름 강제 버그.** Ghostty가 경로에 `tty-graphics-protocol` 문자열이 없으면 `EINVAL: temporary file not named correctly`로 거부(GH #5536, pixcat가 1.1에서 깨짐). kitty 스펙은 그 문자열을 *삭제 전 안전가드*로만 요구하는데 Ghostty(PR #4451)가 *읽기 게이트*로 잘못 강제한 게 근본원인.
+  - **실무 결론**: 파일모드(t=f) 말고 **스트림/직접 전송(a=T,t=d)** 쓰는 도구를 택하라.
 
-### 로컬 도구 설치 현황
-- kitten/icat/timg/chafa/viu/wezterm **전부 미설치**. (`brew install chafa` 또는 `timg` 즉시 가능.)
+### 도구별 (tools work ONLY when emitting kitty protocol)
+- **chafa** — `chafa -f kitty`로 명시 지정 시 Ghostty 렌더 (GH #3054, low vote=plausible). brew `chafa 1.18.2`.
+- **timg / viu / wezterm imgcat** — kitty 프로토콜로 출력하게 설정될 때만 동작. Sixel/iTerm2 출력은 Ghostty에서 안 됨.
+- **kitten icat** — kitty 전용, 동작 확정.
+- (주의: 각 도구가 Ghostty를 *자동감지*하는지 vs `-f kitty` 강제 필요한지는 미확정 — 적용 시 확인.)
 
----
-
-## 클립보드 이미지를 터미널에 넣는 3접근 (이번 세션 실측 포함)
-- **(a) 파일 저장 후 경로** — TTY는 이미지 바이트 직접 수신 불가. `img-paste`가 클립보드 PNG를 /tmp 저장 후 경로를 pbcopy. Claude Code엔 절대경로 텍스트=100% 공식 지원. ✅ 이번 세션 실측 동작.
-- **(b) 앱이 클립보드 직접 read** — Claude Code는 **Ctrl+V**(Cmd+V 아님)로 클립보드 이미지 직접 첨부. ⚠️ 단, **한글 IME가 Ctrl+V를 가로채면 'ㅍ/v'로 입력돼 실패** (이번 세션 실제 발생). 영문 상태에서 Ctrl+V 필요.
-- **(c) 인라인 그래픽 프로토콜 렌더** — kitty graphics로 icat/timg/chafa가 터미널에 *표시*만. 받아서 처리는 불가(보기 전용).
+### tmux 경유 (참고)
+- kitty 이미지가 tmux 안에서도 되나 **유니코드 플레이스홀더 + tmux passthrough 래핑** 필요(`allow-passthrough on`). 중첩 tmux는 깨짐.
 
 ---
 
-## 권고: 인라인 이미지 표시 기능을 툴킷에 추가할까?
+## 클립보드 이미지 3접근 (이번 세션 실측 우선)
+> ⚠️ deep-research에서 이 항목 주장들은 검증 미통과(0-0). 아래는 **이번 세션 로컬 실측**이 근거.
+- **(a) 파일 저장 후 경로** — `img-paste`가 클립보드 PNG를 /tmp 저장 + 경로 pbcopy. Claude Code엔 절대경로 텍스트=100% 동작(실측). ✅
+- **(b) 앱이 클립보드 직접 read** — Claude Code는 **Ctrl+V**(Cmd+V 아님). ⚠️ **한글 IME가 Ctrl+V 가로채면 'ㅍ/v' 입력돼 실패**(이번 세션 실제 발생). 영문 상태 필수. → [[lesson_claude_code_image_paste_ctrl_v]]
+- **(c) 인라인 그래픽 렌더** — kitty로 icat/chafa가 *표시*만. 첨부/처리는 불가(보기 전용).
 
-**조건부 YES — 단, "표시(view)" 목적에 한해, 얇은 래퍼로.**
+---
 
-- **할 것**: `scripts/ghostty-icat` 같은 얇은 래퍼 — `chafa`(또는 timg) 존재 시 그걸로 이미지/PDF 썸네일을 터미널에 표시, 없으면 안내. kitty graphics가 Ghostty에 **실재 확인**되므로 표시는 실제로 된다. 비용 낮음(brew 1개 + 스크립트 1개), 기존 img-paste(저장/경로)와 역할 분리됨(표시 vs 첨부).
-- **하지 말 것**: 애니메이션/동영상 의존 기능(미구현 #8272), Sixel/iTerm2 프로토콜 가정(미지원). "클립보드 이미지를 Claude Code에 넣기"는 인라인 표시와 **별개 문제** — 그건 img-paste 경로방식/Ctrl+V로 이미 해결, 인라인 렌더로 풀리지 않음.
-- **선결 검증(적용 전)**: `brew install chafa` 후 실제 Ghostty에서 `chafa some.png`로 렌더 확인 1회. (GUI 표시는 사용자 눈 검증 필요 — 코드/strings로는 거기까지 보장 못 함.)
+## 권고: 인라인 이미지 표시 기능 추가?
 
-## 미해결 / 다음
-- 적대적 검증을 rate-limit 없이 재실행하면 위 ⚠️ 항목(애니/문서) 확정 가능.
-- chafa 실제 렌더 스모크 테스트(brew 설치 후).
+**조건부 YES — kitty-protocol-first, 스트림 모드, "표시 전용".**
+
+- **할 것**: `scripts/ghostty-icat` 얇은 래퍼 — `chafa`(또는 timg) 존재 시 `-f kitty`로 이미지/PDF 썸네일 표시, 없으면 안내. kitty graphics 실재 확인됨 → 실제 렌더됨.
+- **반드시 지킬 것**:
+  1. **kitty 프로토콜만** 가정(Sixel/iTerm2 금지 — 미지원 확정).
+  2. **스트림/직접 전송** 선호(파일모드 EINVAL 버그 회피).
+  3. tmux 안에서 쓸 거면 passthrough 설정 필요.
+- **하지 말 것**: 애니메이션/동영상 의존, 파일전송 모드 의존. "클립보드→Claude Code 첨부"는 인라인 표시와 **별개 문제**(img-paste/Ctrl+V로 이미 해결).
+- **선결(적용 전 1회)**: `brew install chafa` → 실제 Ghostty에서 `chafa -f kitty some.png` 렌더 확인(GUI는 사용자 눈 검증).
+
+## 미검증 / 다음
+- 파일이름 EINVAL 버그가 현재 1.3.x에도 남아있는지(스트림 강제 필요 여부 결정).
+- timg/viu/wezterm imgcat의 Ghostty 자동감지 vs `-f kitty` 강제 필요 여부.
+- 프로토콜 성능/인코딩 비교 수치(질문 #1) — 블로그 출처라 전부 검증 탈락, 미확정.
+- macOS 폰트/셀크기/자동감지 주의점(질문 #5) — 생존 주장 없음, 미커버.

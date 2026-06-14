@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:21:30.903Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a2652b477044f67f4",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-a2652b477044f67f4.jsonl",
+    "last_assistant_message": "Verdict delivered: **refuted=false (claim CONFIRMED)**, high confidence.\n\nThe claim survives adversarial review on all fronts — primary-sourced (maintainer's own statement in GitHub Discussion #2496), accurately worded and dated (Nov 22, 2024), and still current as of Ghostty 1.3.0 (March 2026) with no contradicting evidence. The only nuance is Hashimoto's own \"for now / not final\" caveat, which qualifies but does not refute the claim.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

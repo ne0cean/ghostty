@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T13:22:54.562Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty/dotfiles",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a894662591684183f",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_a89569fc-1bb/agent-a894662591684183f.jsonl",
+    "last_assistant_message": "I've completed the adversarial fact-check of the claim \"Ghostty supports the kitty graphics (image) protocol, and it works through tmux.\"\n\n**Verdict: REFUTED (high confidence)** — as an overreach/oversimplification of the cited quote.\n\nBreakdown:\n- **First half TRUE**: Ghostty officially supports the kitty graphics protocol (confirmed via ghostty.org/docs/features and DeepWiki; pinned + Unicode-placeholder placements; only animation unsupported).\n- **Second half \"works through tmux\" is the problem**: The cited quote itself contains the qualifier \"BUT the data has to be encoded correctly.\" It does NOT work through tmux by default — tmux filters the kitty APC sequences. It only works as a \"hack\" requiring all of: `allow-passthrough on`, app-side DCS passthrough wrapping, and Unicode placeholders; and it breaks in nested tmux.\n- **The cited thread (#7224) is itself a failure report**, and pi-mono issue #2374 (March 2026, Ghostty 1.3.1 + tmux 3.6a) confirms images still don't render without app-side DCS passthrough.\n- **Source quality**: forum discussion making a strong generalized claim that the same forum heavily qualifies — insufficient for the unconditioned phrasing.\n\nThe burden is on the CLI tool (e.g., kitten icat, timg) to implement tmux passthrough — not something Ghostty alone delivers.",
+    "background_tasks": [
+      {
+        "id": "w1n53yjww",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
