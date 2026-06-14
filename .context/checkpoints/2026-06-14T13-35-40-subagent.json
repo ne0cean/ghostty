@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-14T13:35:40.788Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a4d98dfe982771f19",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a4d98dfe982771f19.jsonl",
+    "last_assistant_message": "Ghostty 파워유저 dotfiles 툴킷을 다듬는 중이고, 방금 인라인 이미지 표시(ghostty-icat)와 split 레포명 타이틀을 구현해 커밋까지 마쳤어. 다음 할 일은 네가 터미널에서 ghostty-icat /tmp/clipboard_img_out.png 40을 쳐서 이미지가 뜨는지 확인하는 거야.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
