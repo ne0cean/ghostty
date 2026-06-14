@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T07:30:06.624Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a3b62368f03223e4a",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_7c9bd5cb-f4c/agent-a3b62368f03223e4a.jsonl",
+    "last_assistant_message": "That worked. The `rationale` field was the trigger — adding it causes the validator to fail. The schema's `angles` items only require `label` and `query`; `rationale` is apparently not an accepted additional property. The last successful call already contains my complete, properly-decomposed answer with all 5 distinct search angles. I'm done.",
+    "background_tasks": [
+      {
+        "id": "wv9cj9987",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

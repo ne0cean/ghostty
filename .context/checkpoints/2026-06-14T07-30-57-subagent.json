@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T07:30:57.117Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a50048aecd8b23d69",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_7c9bd5cb-f4c/agent-a50048aecd8b23d69.jsonl",
+    "last_assistant_message": "Returned 6 ranked results via StructuredOutput. Key findings for the practitioner tool-compatibility angle:\n\n- **Ghostty confirmed support:** Kitty Graphics Protocol only (since 1.0), including unicode-placeholder support that enables images inside tmux. Official source: ghostty.org/docs/features.\n- **Ghostty confirmed unsupported:** Sixel (deliberate decision, no plans) and iTerm2 OSC 1337 image protocol. Sources: HN discussion + features docs.\n- **Tool compatibility (#3):** `kitten icat` and `chafa` (via its kitty backend) work in Ghostty because they target KGP; `wezterm imgcat` defaults to the iTerm2 protocol, so it would need its `--kitty`-equivalent or won't render natively. A real edge case exists: chafa+fzf preview image cleanup quirk (Discussion #3054).\n- **Recent (2026) primary-source signal:** Mitchell Hashimoto confirms libghostty now fully exposes KGP, indicating active, mature support.\n\nThe two highest-value sources for a fact-check report are the official `ghostty.org/docs/features` page (confirmed/unsupported matrix) and the Ghostty GitHub discussions (#5218, #3054) for known limitations and real tool behavior.",
+    "background_tasks": [
+      {
+        "id": "wv9cj9987",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

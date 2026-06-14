@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T07:31:52.692Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "af9620a6bb377631c",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_7c9bd5cb-f4c/agent-af9620a6bb377631c.jsonl",
+    "last_assistant_message": "Extracted 5 falsifiable claims from the Akmatori blog post. Source quality is \"blog\" — a company (observability/monitoring) technical blog post, competent overview level but not primary documentation from protocol authors or Ghostty itself.\n\nKey findings relevant to the research question:\n- The post lists Ghostty as supporting the kitty graphics protocol with \"Full\" tmux passthrough (central to RQ #2), though this is a secondary blog assertion and should be cross-checked against Ghostty official docs/GitHub.\n- It does NOT claim Ghostty supports Sixel or iTerm2 OSC 1337 — Ghostty appears only under the kitty protocol list.\n- Encoding/limitation details for all three protocols (base64 escape sequences, Sixel 256-color/SSH-friendly, iTerm2 OSC 1337/macOS-focused) corroborate RQ #1.\n\nCaveat for the parent agent: the WebFetch summary may have paraphrased the terminal-support lists; the exact membership of \"Ghostty\" in the kitty list should be verified against Ghostty's own documentation before treating Ghostty-Sixel support as \"unsupported\" rather than merely \"not mentioned here.\" Publish date: 2026-03-14, author: Akmatori team.",
+    "background_tasks": [
+      {
+        "id": "wv9cj9987",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

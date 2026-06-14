@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T07:31:09.546Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a954661d581fabab9",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_7c9bd5cb-f4c/agent-a954661d581fabab9.jsonl",
+    "last_assistant_message": "The Ghostty terminfo help page (https://ghostty.org/docs/help/terminfo) is an official primary source but covers only TERM value configuration and terminfo capability advertisement — it contains no mention of the kitty graphics protocol, Sixel, iTerm2 OSC 1337, or any inline image rendering. For the research question it offers only tangential context: Ghostty's TERM is `xterm-ghostty` with a bundled terminfo entry. The actual graphics-protocol support facts must be sourced from other Ghostty docs/release notes/GitHub pages, not this one.",
+    "background_tasks": [
+      {
+        "id": "wv9cj9987",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

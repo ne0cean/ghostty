@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T07:30:52.179Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a1382b391b480f89e",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_7c9bd5cb-f4c/agent-a1382b391b480f89e.jsonl",
+    "last_assistant_message": "Returned 6 ranked results covering the broad technical comparison angle. Key findings: the Akmatori blog gives the cleanest three-way protocol mechanics comparison; two Ghostty GitHub discussions serve as primary sources confirming Sixel is unsupported by design and Kitty graphics is supported but lacks animation frames; rasterm documents byte-level encodings; and timg/chafa docs plus the compatibility matrix cover CLI-tool protocol auto-detection and Ghostty's standing among peers.",
+    "background_tasks": [
+      {
+        "id": "wv9cj9987",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}

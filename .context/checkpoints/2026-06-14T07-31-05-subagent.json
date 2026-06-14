@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-14T07:31:05.330Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "ab09dd04ff0ca328e",
+    "agent_type": "workflow-subagent",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/workflows/wf_7c9bd5cb-f4c/agent-ab09dd04ff0ca328e.jsonl",
+    "last_assistant_message": "Returned 6 ranked sources for the architecture-limitation angle. Top findings:\n\n- **kitty graphics protocol official spec** (high) — the core architecture limitation: TTY is text-only, so image bytes must be base64-encoded, chunked to 4096 bytes, and wrapped in APC escapes (m=1/m=0 continuation). Also documents the U+10EEEE Unicode placeholder and shared-memory transfer. This is the protocol Ghostty actually implements.\n- **HN: Ghostty does not support Sixel** (high) — confirms Ghostty deliberately implements kitty graphics and rejects Sixel; flags the secondary blog's \"Ghostty 1.4.0 added Sixel\" claim as contradictory/unverified.\n- **claude-code #54546 and #42712** (high) — map the limitation directly onto the Claude Code + Ghostty toolkit: raw graphics escapes get stripped without a passthrough channel; OSC 52 is text-only, so an app must read the clipboard image bytes directly (claim 4b/4c).\n- **Akmatori comparison blog** (medium) and **kitten icat official docs** (medium) — protocol comparison and tool-dependency for claim 3, with the caveat that icat/chafa/timg work in Ghostty via the kitty backend while iTerm2-imgcat/Sixel-only paths do not.\n\nNotable conflict to surface in the final report: one secondary blog claims Ghostty added Sixel in 1.4.0, which contradicts the kitty-protocol-only design confirmed by the HN/official sources — mark as uncertain pending Ghostty official docs.",
+    "background_tasks": [
+      {
+        "id": "wv9cj9987",
+        "type": "workflow",
+        "status": "running",
+        "description": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+        "name": "deep-research"
+      }
+    ],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
