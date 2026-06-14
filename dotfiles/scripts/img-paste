@@ -86,18 +86,19 @@ case "$MODE" in
         if has_image; then
             # 이미지가 있으면 우선 — 텍스트가 같이 있어도 이미지 처리
             # (브라우저/슬랙 복사는 image+text가 흔함: 텍스트 우선 시 이미지 유실)
-            # 저장 후 경로 입력
+            # 저장 후 *경로를 클립보드에 복사* → Claude Code 등에서 Cmd+V(텍스트 paste)로 경로 입력
+            # (osascript keystroke은 접근성 권한+타이밍 취약 → pbcopy가 안정적)
             SAVED=$(save_clipboard_image)
             if [ -n "$SAVED" ] && [ -f "$SAVED" ]; then
                 SIZE=$(wc -c < "$SAVED" | tr -d ' ')
+                printf '%s' "$SAVED" | pbcopy
                 echo "[img-paste] 저장: $SAVED (${SIZE}B)" >&2
-                osascript -e "tell application \"System Events\" to keystroke \"$SAVED\""
+                echo "[img-paste] 경로를 클립보드에 복사함 → Claude Code에서 Cmd+V 후 Enter" >&2
             else
                 echo "[img-paste] 저장 실패" >&2; exit 1
             fi
         elif has_text; then
-            # 텍스트 paste — keystroke으로 입력
-            paste_text
+            echo "[img-paste] 클립보드에 이미지 없음 (텍스트만 있음)" >&2; exit 1
         else
             echo "[img-paste] 클립보드 비어있음" >&2; exit 1
         fi
