@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-14T06:22:06.685Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a32547cf292e897e5",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a32547cf292e897e5.jsonl",
+    "last_assistant_message": "Ghostty 파워유저 dotfiles 툴킷을 손보는 중인데, registry가 광고한 죽은 기능 5개를 복구하고 커밋까지 끝냈어. 다음은 Ghostty 재시작 후 quick terminal과 ghostty-help가 실제 작동하는지 네가 눌러서 확인하는 거야.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
