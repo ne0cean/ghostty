@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# ghostty-icat: 이미지/PDF 썸네일을 Ghostty 터미널에 인라인 표시 (보기 전용)
+#
+# 근거(deep-research 2026-06-14): Ghostty는 kitty graphics protocol만 지원
+# (Sixel/iTerm2 OSC1337 미지원). 그래서 항상 kitty 포맷 강제.
+# 첨부/처리가 아니라 "표시"만 한다. 파일 첨부는 img-paste 참고.
+#
+# 사용법:
+#   ghostty-icat <이미지파일> [너비셀]      한 장 표시
+#   ghostty-icat *.png                       여러 장
+#   ghostty-icat --check                     렌더러 가용성 점검
+
+set -uo pipefail
+
+# ── 터미널이 kitty graphics를 지원하는지 (Ghostty/kitty) ──────────────────────
+supports_kitty() {
+    case "${TERM:-}" in
+        xterm-ghostty|xterm-kitty) return 0 ;;
+    esac
+    [[ -n "${GHOSTTY_RESOURCES_DIR:-}" || -n "${KITTY_WINDOW_ID:-}" ]] && return 0
+    return 1
+}
+
+# ── 렌더러 탐지: kitten icat > chafa > timg ──────────────────────────────────
+# (kitten은 kitty 전용 네이티브, chafa/timg는 -f kitty 강제)
+pick_renderer() {
+    if command -v kitten >/dev/null 2>&1; then echo "kitten"; return; fi
+    if command -v chafa  >/dev/null 2>&1; then echo "chafa";  return; fi
+    if command -v timg   >/dev/null 2>&1; then echo "timg";   return; fi
+    echo ""
+}
+
+render() {
+    local file="$1" width="${2:-}" r
+    r=$(pick_renderer)
+    [[ -f "$file" ]] || { echo "[ghostty-icat] 파일 없음: $file" >&2; return 1; }
+    case "$r" in
+        kitten) kitten icat ${width:+--place "${width}x0@0x0"} "$file" ;;
+        # chafa: kitty 포맷 강제(Ghostty는 kitty만). 스트림 출력이라 파일모드 EINVAL 버그 회피.
+        chafa)  chafa -f kitty ${width:+--size "${width}"} "$file" ;;
+        timg)   timg -p k ${width:+-g "${width}x"} "$file" ;;   # -p k = kitty 프로토콜
+        "")     echo "[ghostty-icat] 렌더러 없음. 설치: brew install chafa" >&2; return 1 ;;
+    esac
+}
+
+case "${1:---help}" in
+    --check)
+        echo "=== ghostty-icat 점검 ==="
+        supports_kitty && echo "터미널 kitty graphics: ✅ (TERM=$TERM)" \
+                       || echo "터미널 kitty graphics: ❌ (TERM=$TERM — Ghostty/kitty 아님)"
+        r=$(pick_renderer)
+        [[ -n "$r" ]] && echo "렌더러: ✅ $r ($(command -v "$r"))" \
+                      || echo "렌더러: ❌ 없음 (brew install chafa)"
+        ;;
+    --help|"")
+        sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+        ;;
+    *)
+        if ! supports_kitty; then
+            echo "[ghostty-icat] 현재 터미널은 kitty graphics 미지원 (TERM=$TERM). Ghostty/kitty에서 실행하세요." >&2
+            exit 1
+        fi
+        # 마지막 인자가 숫자면 너비로 사용
+        width=""
+        args=("$@")
+        last="${args[${#args[@]}-1]}"
+        if [[ "$last" =~ ^[0-9]+$ ]]; then
+            width="$last"
+            unset 'args[${#args[@]}-1]'
+        fi
+        rc=0
+        for f in "${args[@]}"; do render "$f" "$width" || rc=1; done
+        exit $rc
+        ;;
+esac
