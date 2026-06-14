@@ -19,3 +19,6 @@ window-save-state = always
 # 미세 UX
 mouse-hide-while-typing = true
 window-padding-balance = true
+
+# Quick Terminal — 어디서든 단축키로 터미널 소환 (registry 등록 기능, keybind 미설정이었음)
+keybind = super+backquote=toggle_quick_terminal
