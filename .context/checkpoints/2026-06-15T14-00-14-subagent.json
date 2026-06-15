@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-15T14:00:14.367Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a2e0b9a80488b0bda",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a2e0b9a80488b0bda.jsonl",
+    "last_assistant_message": "고스티에서 클립보드 이미지 붙여넣기를 키로 되살리는 작업 중이야. Cmd+Shift+V가 이제 Ctrl+V 신호(0x16)를 한글 IME 무관하게 보내. 다음: 스크린샷을 클립보드에 복사한 뒤(Cmd+Ctrl+Shift+4) Claude Code에서 Cmd+Shift+V로 이미지가 붙는지 테스트해줘.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
