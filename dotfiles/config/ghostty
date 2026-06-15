@@ -1,8 +1,8 @@
-# 이미지 붙여넣기
-#   • Claude Code / AI CLI  →  Ctrl+V   (앱이 클립보드 이미지를 직접 읽음. Cmd+V 금지!)
-#   • 그 외(vim/cp 등) 파일 경로가 필요할 때  →  Cmd+Shift+V (img-paste 백업)
-#     Cmd+Shift+V 가 C-x C-v 를 보내면 zsh 위젯이 클립보드 이미지를 /tmp 저장 후 경로 삽입
-keybind = cmd+shift+v=text:\x18\x16
+# 이미지 붙여넣기 — Cmd+Shift+V 가 Ctrl+V 바이트(0x16)를 그대로 전송.
+#   한글 IME가 Ctrl 키를 먹어서 진짜 Ctrl+V는 0x16을 못 만든다(=이미지 paste 실패).
+#   Cmd 조합은 IME가 못 먹으므로, Cmd+Shift+V로 0x16을 쏘면 IME 무관하게
+#   Claude Code 이미지 paste가 발동한다. (한글/영문 어느 모드든 동작)
+keybind = cmd+shift+v=text:\x16
 
 # 클립보드 신뢰성 — paste 권한 prompt 제거 (이미지/텍스트 paste UX)
 clipboard-read = allow
