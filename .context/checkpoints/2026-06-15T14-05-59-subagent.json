@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-15T14:05:59.394Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a3399109589026c71",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a3399109589026c71.jsonl",
+    "last_assistant_message": "Goal: make clipboard image paste work in Claude Code under Ghostty. I set Cmd+Shift+V to send the Ctrl+V byte, bypassing the Korean-IME/Ghostty key bug, and loaded an image into your clipboard. Next: press Cmd+Shift+V in Claude Code and tell me if the image attaches.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
