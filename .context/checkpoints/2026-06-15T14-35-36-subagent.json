@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-15T14:35:36.098Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "a4fdb0c0af4b4faa7",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-a4fdb0c0af4b4faa7.jsonl",
+    "last_assistant_message": "Ghostty 이미지 붙여넣기를 고쳤고, 이제 Cmd+Shift+V로 이미지가 잘 붙어요. 다음 할 일은 원하시면 Karabiner로 Ctrl+V를 그대로 쓰게 복원하는 것인데, 진행할지 알려주세요.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
