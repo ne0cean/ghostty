@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-06-15T14:26:22.090Z",
+  "subagent_input": {
+    "session_id": "4ded6dd1-cf6b-40a4-95fb-b5125584fc8e",
+    "transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e.jsonl",
+    "cwd": "/Users/noir/Projects/ghostty",
+    "permission_mode": "bypassPermissions",
+    "agent_id": "ac2396dfb8109511c",
+    "agent_type": "",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "SubagentStop",
+    "stop_hook_active": false,
+    "agent_transcript_path": "/Users/noir/.claude/projects/-Users-noir/4ded6dd1-cf6b-40a4-95fb-b5125584fc8e/subagents/agent-ac2396dfb8109511c.jsonl",
+    "last_assistant_message": "목표는 Ghostty에서 클립보드 이미지 붙여넣기를 되살리는 것. config 리로드와 키바인드(Cmd+Shift+V→0x16) 준비를 끝냈고 클립보드에 이미지도 넣어둔 상태. 다음 할 일은 네가 Cmd+Shift+, 누르고 Cmd+Shift+V로 이미지가 붙는지 확인하는 것.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "changed_files": [],
+  "changed_count": 0,
+  "status": "clean",
+  "phase": "unknown",
+  "resume_prompt": "/pickup"
+}
