@@ -10,11 +10,13 @@
 # or a full GitHub URL to provide additional context.
 def main [
   issue?: any, # Optional GitHub issue/PR number or URL for context
+  --all-comments, # Include all issue comments instead of the latest 10
 ] {
   let issueContext = if $issue != null {
     let data = gh issue view $issue --json author,title,number,body,comments | from json
     let comments = if ($data.comments? != null) {
-      $data.comments | each { |comment|
+      let selectedComments = if $all_comments { $data.comments } else { $data.comments | last 10 }
+      $selectedComments | each { |comment|
         let author = if ($comment.author?.login? != null) { $comment.author.login } else { "unknown" }
         $"
 ### Comment by ($author)
